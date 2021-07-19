@@ -1,20 +1,26 @@
+package spark.folder
+
 import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 
 object Producer {
-  val props: Properties = new Properties()
-  props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker1:9092")
-  props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer])
-  props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer])
+  def main(args: Array[String]): Unit = {
+    writetoKafka("test")
+  }
 
-  val producer: KafkaProducer[String, String] = new KafkaProducer[String, String](props)
+  def writetoKafka(topic: String): Unit = {
 
-  val key = "akey"
-  val value = "adata"
+    val props: Properties = new Properties()
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer])
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, classOf[StringSerializer])
 
-  val record = new ProducerRecord[String, String]("atopic", key, value)
-  producer.send(record)
+    val producer: KafkaProducer[String, String] = new KafkaProducer[String, String](props)
 
-  producer.close()
+    val record = new ProducerRecord[String, String](topic, "COUCOU", "OUIOUIOUI")
+    producer.send(record)
+
+    producer.close()
+  }
 }

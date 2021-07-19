@@ -4,6 +4,10 @@
 *.iml
 *.ipr
 .idea/
+.bloop
+.bsp
+.metals
+.vscode
 
 ### NetBeans ###
 nbproject/private/
@@ -14,4 +18,4 @@ nbdist/
 .nb-gradle/
 
 project/
-/target/
+target/

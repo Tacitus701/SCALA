@@ -24,7 +24,7 @@ object Producer {
 
     val msg = id + ";" + pos + ";" + name + ";" + score + ";" + words + ";" + LocalDate.now() + ";"
     
-    if (score < 5)
+    if (score < 1)
       writetoKafka("alert", msg)
 
     writetoKafka("report", msg)

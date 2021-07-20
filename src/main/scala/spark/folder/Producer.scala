@@ -5,12 +5,13 @@ import faker._
 import java.time.LocalDate
 import java.util.Properties
 import com.google.gson._
+import collection.JavaConverters._
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 
 object Producer {
-  case class Message(id: Int, pos: (Double, Double), name: String, score: Double, words: List[String], date: LocalDate)
+  case class Message(id: Int, pos: (Double, Double), name: String, score: Double, words: java.util.List[String], date: LocalDate)
 
   def main(args: Array[String]): Unit = {
     peacewatchers(100)
@@ -23,8 +24,7 @@ object Producer {
     val pos = Geo.coords
     val name = Name.name
     val score = random.nextInt(100) / 10.0
-    val words = Lorem.sentences()
-
+    val words = Lorem.sentences().asJava
     val msg = new Message(id, pos, name, score, words, LocalDate.now())
 
     val gson = new Gson

@@ -16,8 +16,7 @@ object ConsumerAlert {
     consumeFromKafka("alert")
   }
 
-  def consumeFromKafka(topic: String, sparkSession: SparkSession) = {
-    import sparkSession.implicits._
+  def consumeFromKafka(topic: String) = {
 
     val props: Properties = new Properties()
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")

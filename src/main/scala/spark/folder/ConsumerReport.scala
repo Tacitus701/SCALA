@@ -32,7 +32,7 @@ object ConsumerReport {
     while (true) {
       val records: ConsumerRecords[String, String] = consumer.poll(Duration.ofMillis(100))
       records.asScala.foreach({record =>
-        sparkSession.read.json(Seq(record.value).toDS()).coalesce(1).write.mode(SaveMode.Overwrite).parquet("adl://peaceland.azuredatalakestore.net/Record")
+        sparkSession.read.json(Seq(record.value).toDS()).coalesce(1).write.mode("append").parquet("adl://peaceland.azuredatalakestore.net/Record")
 
         //println(s"offset = ${record.offset()}, key = ${record.key()}, value = ${record.value()}")
       })

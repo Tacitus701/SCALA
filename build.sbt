@@ -18,3 +18,11 @@ libraryDependencies += "org.apache.hadoop" % "hadoop-azure-datalake" % "3.1.1"
 libraryDependencies += "org.apache.hadoop" % "hadoop-azure" % "3.1.1"
 
 libraryDependencies += "com.google.code.gson" % "gson" % "2.7"
+
+dependencyOverrides ++= {
+  Seq(
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7.1",
+    "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7",
+    "com.fasterxml.jackson.core" % "jackson-core" % "2.6.7"
+  )
+}

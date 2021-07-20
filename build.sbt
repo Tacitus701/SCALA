@@ -9,3 +9,5 @@ libraryDependencies += "org.apache.kafka" % "kafka-streams" % "2.1.0"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.3" % Runtime
 
 libraryDependencies += "com.github.pjfanning" % "scala-faker_2.12" % "0.5.2"
+
+libraryDependencies += "com.google.code.gson" % "gson" % "2.7"

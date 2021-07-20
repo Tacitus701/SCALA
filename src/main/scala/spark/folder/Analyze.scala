@@ -15,15 +15,16 @@ object Analyze {
 
   def main(args: Array[String]): Unit = {
 		val session = PeaceSparkSession.sparkSession()
-    val alerts = session.read.parquet("adl://peaceland.azuredatalakestore.net/Record")
+    	val alerts = session.read.parquet("adl://peaceland.azuredatalakestore.net/Record")
 		val n = alerts.count()
 		alerts.show()
+		//TODO apperler answer
   }
 
-  /*def answer1(alerts: RDD[Message], count: Long) = {
+  def answer1(alerts: RDD[Message], count: Long) = {
 		val r = alerts.map((e) => e.score).reduce(_ + _) / count
 		println("The mean score is : ${r} .")
-  }*/
+  }
 
 	def answer2(alerts: RDD[Message]) = {
 		val r = alerts.map(e => e.name).filter(e => e.startsWith("Dr.")).count()

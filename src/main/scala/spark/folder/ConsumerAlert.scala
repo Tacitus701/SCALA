@@ -30,7 +30,7 @@ object ConsumerAlert {
     while (true) {
       val records: ConsumerRecords[String, String] = consumer.poll(Duration.ofMillis(100))
       records.asScala.foreach({record =>
-        println(s"\n\nALERT: ${record.value()}\n\n")
+        println(s"ALERT: ${record.value()}")
       })
     }
     //Si auto commit set to false

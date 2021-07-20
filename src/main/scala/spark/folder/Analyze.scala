@@ -10,14 +10,25 @@ import scala.collection.JavaConverters._
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.rdd.RDD
 import Producer.Message
+import org.apache.spark.sql.Encoders
+import faker._
+import java.time.LocalDate
 
 object Analyze {
 
   def main(args: Array[String]): Unit = {
 		val session = PeaceSparkSession.sparkSession()
+		
+		import session.implicits._
     	val alerts = session.read.parquet("adl://peaceland.azuredatalakestore.net/Record")
 		val n = alerts.count()
+		//val encoder = Encoders.bean(classOf[Producer.Message])
+		//val RDD = alerts.as[Producer.Message](encoder).rdd
 		alerts.show()
+		val RDD = alerts.map(row => Producer.Message(row.getInt(1), Geo.coords, row.getString(2), row.getDouble(3), row.getList(4),LocalDate.now())).rdd
+		answer1(RDD, n)
+
+		session.stop()
 		//TODO apperler answer
   }
 

@@ -10,10 +10,11 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
 
 import scala.collection.JavaConverters._
 
-object ConsumerAlert {
+object ConsumerReport {
 
-  def main(args: Array[String]): Unit = {
-    consumeFromKafka("alert")
+  def main(args: Array[String])
+  {
+      consumeFromKafka("report", PeaceSparkSession.sparkSession())
   }
 
   def consumeFromKafka(topic: String, sparkSession: SparkSession) = {
@@ -31,7 +32,9 @@ object ConsumerAlert {
     while (true) {
       val records: ConsumerRecords[String, String] = consumer.poll(Duration.ofMillis(100))
       records.asScala.foreach({record =>
-        println(s"\n\nALERT: ${record.value()}\n\n")
+        sparkSession.read.json(Seq(record.value).toDS()).coalesce(1).write.mode(SaveMode.Overwrite).parquet("adl://peaceland.azuredatalakestore.net/Record")
+
+        //println(s"offset = ${record.offset()}, key = ${record.key()}, value = ${record.value()}")
       })
     }
     //Si auto commit set to false

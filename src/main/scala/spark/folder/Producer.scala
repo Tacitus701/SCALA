@@ -1,8 +1,10 @@
 package spark.folder
 
-import java.time.LocalDate
+import faker._
 
+import java.time.LocalDate
 import java.util.Properties
+
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 
@@ -11,25 +13,17 @@ object Producer {
     peacewatchers(100)
   }
 
-  val people = List("Robin Vandamme", "Arnaud Charpentier", "Jean-Christophe Antoine", "Philippe Qiao")
-  val peaceScores = List(10, 0, 0, 0)
-  val words = List("bonjour", "hello", "revolution", "pain")
-
-
   def peacewatchers(nbPeaceWatchers: Int): Unit = {
     val random = scala.util.Random
 
     val id = random.nextInt(nbPeaceWatchers)
-    val latitude = random.nextInt(180) - 90
-    val longitude = random.nextInt(360) - 180
-    val index = random.nextInt(people.length)
-    val name = people(index)
-    val score = peaceScores(index)
+    val pos = Geo.coords
+    val name = Name.name
+    val score = random.nextInt(100) / 10.0
+    val words = Lorem.sentences()
 
-    val msg = id + ";" + latitude + ";" + longitude + ";" + name + ";" + score + ";" + words.mkString(",") + ";" + LocalDate.now() + ";"
-
-    println(msg)
-
+    val msg = id + ";" + pos + ";" + name + ";" + score + ";" + words + ";" + LocalDate.now() + ";"
+    
     if (score < 5)
       writetoKafka("alert", msg)
 

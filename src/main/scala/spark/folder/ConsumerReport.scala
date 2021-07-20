@@ -1,20 +1,24 @@
 package spark.folder
 
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecords, KafkaConsumer}
-
 import java.util.Properties
-import org.apache.kafka.common.serialization.StringDeserializer
 
+import org.apache.kafka.common.serialization.StringDeserializer
 import java.time.Duration
+
+import org.apache.spark.sql.{SaveMode, SparkSession}
+
 import scala.collection.JavaConverters._
 
-object Consumer {
+object ConsumerReport {
 
-  def main(args: Array[String]): Unit = {
-    consumeFromKafka("test")
+  def main(args: Array[String])
+  {
+      consumeFromKafka("report", PeaceSparkSession.sparkSession())
   }
 
-  def consumeFromKafka(topic: String) = {
+  def consumeFromKafka(topic: String, sparkSession: SparkSession) = {
+    import sparkSession.implicits._
 
     val props: Properties = new Properties()
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
@@ -28,7 +32,9 @@ object Consumer {
     while (true) {
       val records: ConsumerRecords[String, String] = consumer.poll(Duration.ofMillis(100))
       records.asScala.foreach({record =>
-        println(s"offset = ${record.offset()}, key = ${record.key()}, value = ${record.value()}")
+        sparkSession.read.json(Seq(record.value).toDS()).coalesce(1).write.mode(SaveMode.Overwrite).parquet("adl://peaceland.azuredatalakestore.net/Record")
+
+        //println(s"offset = ${record.offset()}, key = ${record.key()}, value = ${record.value()}")
       })
     }
     //Si auto commit set to false

@@ -20,6 +20,7 @@ object Analyze {
 		val session = PeaceSparkSession.sparkSession()
 		
 		import session.implicits._
+
     	val alerts = session.read.parquet("adl://peaceland.azuredatalakestore.net/Record")
 		val n = alerts.count()
 		val encoder = Encoders.kryo(classOf[Producer.Message])
@@ -44,7 +45,7 @@ object Analyze {
   }
 	
 	def answer3(alerts: RDD[Message]) = {
-		val r = alerts.map(e => e.pos._1).filter(e => e > 0).count()
+		val r = alerts.map(e => e.lat).filter(e => e > 0).count()
 		println("There are ${r} reports in the northern hemisphere.")
   }
 	

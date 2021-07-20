@@ -14,4 +14,7 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "com.github.pjfanning" % "scala-faker_2.12" % "0.5.2"
 
+libraryDependencies += "org.apache.hadoop" % "hadoop-azure-datalake" % "3.1.1"
+libraryDependencies += "org.apache.hadoop" % "hadoop-azure" % "3.1.1"
+
 libraryDependencies += "com.google.code.gson" % "gson" % "2.7"
